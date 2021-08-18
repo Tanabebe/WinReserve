@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Remote;
 
 namespace WinReserve
 {

@@ -1,0 +1,39 @@
+﻿version: "3"
+services:
+  # ハブ用
+  selenium-hub:
+    image: selenium/hub:4.0.0-rc-1-prerelease-20210804
+    shm_size: 2gb
+    container_name: selenium-hub
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+  # Chrome用
+  node-chrome:
+    image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210804
+    # VNC接続用
+    # image: selenium/node-chrome-debug:3.141
+    # ports:
+    #   - 5900:5900
+    depends_on:
+      - selenium-hub
+    environment:
+      - TZ=Asia/Tokyo
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "6900:5900"
+  # App用
+  dotnet-selenium-chrome:
+    build: ./
+    depends_on:
+      - selenium-hub
+    tty: true
+    environment:
+      - TZ=Asia/Tokyo
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    tty: true

@@ -35,36 +35,35 @@ namespace WinReserve
         /// </summary>
         public void DoRun()
         {
+            Console.WriteLine("==== START ====");
+
             var options = new ChromeOptions();
             options.AddArguments(
                 "--headless",
                 "--start-maximized"
             );
 
-            var path = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "sc/");
+            Console.WriteLine(_selenuimHub);
+
             var driver = new RemoteWebDriver(new Uri(_selenuimHub), options);
             try
             {
                 driver.Navigate().GoToUrl(_firstNavUrl);
-                SaveScreenShot(driver, path);
+                SaveScreenShot(driver);
                 driver.FindElement(By.LinkText(_reserveNowtext)).Click();
 
-                SaveScreenShot(driver, path);
                 driver.FindElementById("user_email").SendKeys(_email);
+                driver.FindElementById("user_password").SendKeys(_password);
+                SaveScreenShot(driver);
 
-                SaveScreenShot(driver, path);
-                driver.FindElementById("_password").SendKeys(_password);
-
-                SaveScreenShot(driver, path);
                 driver.FindElement(By.Name("commit")).Submit();
+                SaveScreenShot(driver);
 
-                SaveScreenShot(driver, path);
                 driver.FindElement(By.Name("commit")).Submit();
+                SaveScreenShot(driver);
 
-                SaveScreenShot(driver, path);
                 driver.FindElement(By.Name("commit")).Submit();
-
-                SaveScreenShot(driver, path);
+                SaveScreenShot(driver);
             }
             catch (NoSuchElementException ex)
             {
@@ -95,9 +94,9 @@ namespace WinReserve
         /// </summary>
         /// <param name="driver">RemoteWebDriver</param>
         /// <param name="path">保存先パス</param>
-        public static void SaveScreenShot(RemoteWebDriver driver, string path)
+        public static void SaveScreenShot(RemoteWebDriver driver)
         {
-            driver.GetScreenshot().SaveAsFile($"{path}/{ImageCounter()}.png", ScreenshotImageFormat.Png);
+            driver.GetScreenshot().SaveAsFile($"images/{ImageCounter()}.png", ScreenshotImageFormat.Png);
         }
     }
 }
