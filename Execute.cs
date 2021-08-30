@@ -35,15 +35,11 @@ namespace WinReserve
         /// </summary>
         public void DoRun()
         {
-            Console.WriteLine("==== START ====");
-
             var options = new ChromeOptions();
             options.AddArguments(
                 "--headless",
                 "--start-maximized"
             );
-
-            Console.WriteLine(_selenuimHub);
 
             var driver = new RemoteWebDriver(new Uri(_selenuimHub), options);
             try
